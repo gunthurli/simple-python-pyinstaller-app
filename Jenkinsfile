@@ -32,15 +32,15 @@ pipeline {
         stage('Deliver') {
             agent {
                 docker {
-                    image 'cdrx/pyinstaller-linux:python2'
+                    image 'qnib/pytest'
                 }
             }
             steps {
-                sh 'ls -al'
+                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
             }
             post {
-                success {
-                    archiveArtifacts 'dist/add2vals'
+                always {
+                    junit 'test-reports/results.xml'
                 }
             }
         }
