@@ -32,16 +32,11 @@ pipeline {
         stage('Deliver') {
             agent {
                 docker {
-                    image 'qnib/pytest'
+                    image 'cdrx/pyinstaller-linux:python2'
                 }
             }
             steps {
-                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
-            }
-            post {
-                always {
-                    junit 'test-reports/results.xml'
-                }
+                sh 'pyinstaller --onefile sources/add2vals.py'
             }
         }
     }
